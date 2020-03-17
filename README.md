@@ -1,24 +1,10 @@
 # myhomeshop
+## 简介
+Vue开发的PC端商城 前后端分离
+后端使用node开发
 
-## Project setup
-```
-npm install
-```
+## 开发时间
+2020.3.17
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 开发周期
+两天
