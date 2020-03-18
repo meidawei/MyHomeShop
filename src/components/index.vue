@@ -27,7 +27,11 @@
                         <a href="/goods/40.html">{{item.title}}</a>
                       </dt>
                       <dd>
-                        <a v-for="(it) in item.subcates" :key="it.id" href="/goods/43.html">{{it.title}}</a>
+                        <a
+                          v-for="(it) in item.subcates"
+                          :key="it.id"
+                          href="/goods/43.html"
+                        >{{it.title}}</a>
                       </dd>
                     </dl>
                   </div>
@@ -38,57 +42,29 @@
           <!--幻灯片-->
           <div class="left-705">
             <div class="banner-img">
-              <div id="focus-box" class="focus-box">
-                <ul class="slides">
-                  <li
-                    class
-                    style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1;"
-                  >
-                    <a href="/goods.html">
-                      <img
-                        style="width: 100%;height:100%;"
-                        src=""
-                        draggable="false"
-                      />
-                    </a>
-                  </li>
-                  <li
-                    style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; z-index: 2;"
-                    class="flex-active-slide"
-                  >
-                    <a href="/goods.html">
-                      <img
-                        style="width: 100%;height:100%;"
-                        src=""
-                        draggable="false"
-                      />
-                    </a>
-                  </li>
-                </ul>
-                <ol class="flex-control-nav flex-control-paging">
-                  <li>
-                    <a class>1</a>
-                  </li>
-                  <li>
-                    <a class="flex-active">2</a>
-                  </li>
-                </ol>
-              </div>
+              <!-- 使用走马灯实现轮播图 -->
+              <el-carousel height="341px">
+                <el-carousel-item v-for="item in sliderlist" :key="item.id">
+                  <img :src="item.img_url | imgUrl" />
+                </el-carousel-item>
+              </el-carousel>
             </div>
           </div>
           <!--/幻灯片-->
           <div class="left-220">
             <ul class="side-img-list">
-              <li v-for="(item,index) in sliderlist" :key="index" >
-                <div class="img-box">
-                  <label>{{index+1}}</label>
-                  <img :src="item.img_url | imgUrl" />
-                </div>
-                <div class="txt-box">
-                  <a href="/goods/show-98.html">{{item.title}}</a>
-                  <!-- 使用过滤器进行过滤 -->
-                  <span>{{item.add_time | shortTime}}</span>
-                </div>
+              <li v-for="(item,index) in sliderlist" :key="index">
+                <router-link :to="'/detail/'+item.id">
+                  <div class="img-box">
+                    <label>{{index+1}}</label>
+                    <img :src="item.img_url | imgUrl" />
+                  </div>
+                  <div class="txt-box">
+                    <a href="/goods/show-98.html">{{item.title}}</a>
+                    <!-- 使用过滤器进行过滤 -->
+                    <span>{{item.add_time | shortTime}}</span>
+                  </div>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -99,7 +75,11 @@
       <div class="main-tit">
         <h2>{{item.catetitle}}</h2>
         <p>
-          <a v-for="(its,index) in item.level2catelist" :key="index" href="/goods/43.html">{{its.subcatetitle}}</a>
+          <a
+            v-for="(its,index) in item.level2catelist"
+            :key="index"
+            href="/goods/43.html"
+          >{{its.subcatetitle}}</a>
           <a href="/goods/40.html">
             更多
             <i>+</i>
@@ -110,7 +90,7 @@
         <div class="wrap-box">
           <ul class="img-list">
             <li v-for="(it) in item.datas" :key="it.artID">
-              <a href="#/site/goodsinfo/102" class>
+              <router-link :to="'/detail/'+it.artID">
                 <div class="img-box">
                   <img :src="it.img_url | imgUrl" />
                 </div>
@@ -127,7 +107,7 @@
                     </span>
                   </p>
                 </div>
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -137,13 +117,12 @@
 </template>
 <script>
 // 导入 axios
-import axios from "axios";
-import global from '../global_variable.js'
+// import axios from "axios";
 // 导入 moment.js 主要用于过滤时间
-import moment from 'moment';
+// import moment from "moment";
 export default {
   name: "index",
-  data(){
+  data() {
     return {
       // 分类列表
       catelist: [],
@@ -152,32 +131,38 @@ export default {
       // 置顶推荐
       toplist: [],
       // 商品列表数据
-      groupList:[]
-    }
+      groupList: []
+    };
   },
   // 生命周期函数
   created() {
-    axios.get(`${global.baseUrl}site/goods/gettopdata/goods`).then(res=>{
-      this.catelist = res.data.message.catelist
-      this.sliderlist = res.data.message.sliderlist
-      this.toplist = res.data.message.toplist
-    })
-    axios.get(`${global.baseUrl}site/goods/getgoodsgroup`).then(res=>{
-      this.groupList = res.data.message
-    })
+    this.$axios.get(`${this.$baseUrl}site/goods/gettopdata/goods`).then(res => {
+      this.catelist = res.data.message.catelist;
+      this.sliderlist = res.data.message.sliderlist;
+      this.toplist = res.data.message.toplist;
+    });
+    this.$axios.get(`${this.$baseUrl}site/goods/getgoodsgroup`).then(res => {
+      this.groupList = res.data.message;
+    });
   },
   // 私有过滤器
-  filters:{
-    shortTime(value){
+  /* filters: {
+    shortTime(value) {
       // console.log(value);
-      return moment(value).format('YYYY-MM-DD')
+      return moment(value).format("YYYY-MM-DD");
     },
-    imgUrl(value){
-      return value.replace('http://111.230.232.110:8899','http://134.175.59.248:8899')
+    imgUrl(value) {
+      return value.replace(
+        "http://111.230.232.110:8899",
+        "http://134.175.59.248:8899"
+      );
     }
-  }
+  } */
 };
 </script>
 <style>
-
+.banner-img img {
+  width: 100%;
+  height: 100%;
+}
 </style>

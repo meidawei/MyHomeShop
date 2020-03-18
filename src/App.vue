@@ -2,35 +2,37 @@
   <div id="app">
     <div class="header">
       <!-- 1.0 导航栏头部 -->
-      <div class="head-top">
-        <div class="section">
-          <div class="left-box">
-            <span>黑马买买买</span>
-            <a target="_blank" href="#"></a>
-            <a target="_blank" href="#"></a>
-          </div>
-          <div id="menu" class="right-box">
-            <span style="display: none;">
-              <a href class>登录</a>
-              <strong>|</strong>
-              <a href class>注册</a>
-              <strong>|</strong>
-            </span>
-            <span>
-              <a href class>会员中心</a>
-              <strong>|</strong>
-              <a>退出</a>
-              <strong>|</strong>
-            </span>
-            <a href class>
-              <i class="iconfont icon-cart"></i>购物车(
-              <span id="shoppingCartCount">
-                <span>4</span>
-              </span>)
-            </a>
+      <Affix>
+        <div class="head-top">
+          <div class="section">
+            <div class="left-box">
+              <span>黑马买买买</span>
+              <a target="_blank" href="#"></a>
+              <a target="_blank" href="#"></a>
+            </div>
+            <div id="menu" class="right-box">
+              <span style="display: none;">
+                <a href class>登录</a>
+                <strong>|</strong>
+                <a href class>注册</a>
+                <strong>|</strong>
+              </span>
+              <span>
+                <a href class>会员中心</a>
+                <strong>|</strong>
+                <a>退出</a>
+                <strong>|</strong>
+              </span>
+              <router-link to="/shopcar">
+                <i class="iconfont icon-cart"></i>购物车(
+                <span id="shoppingCartCount">
+                  <span>{{$store.getters.carNum}}</span>
+                </span>)
+              </router-link>
+            </div>
           </div>
         </div>
-      </div>
+      </Affix>
       <!-- 2.0 导航条 -->
       <div class="head-nav">
         <div class="section">
@@ -125,7 +127,10 @@
 
 <script>
 export default {
-  name: "App"
+  name: "App",
+  created(){
+    console.log(this.$store.state.carData)
+  }
 };
 </script>
 
